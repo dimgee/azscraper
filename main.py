@@ -3,7 +3,7 @@ from selectorlib import Extractor
 from Common import Product
 from Common.Product.product import dump_to_json
 import json
-
+import time
 
 
 TESTABLE_LINKS = list()
@@ -13,11 +13,6 @@ url_valid_categories = [util.get_link_to_category(x) for x in valid_categories]
 selector_file = util.SelectorTypeENUM.SELECTOR_PRODUCT.filter
 e = Extractor.from_yaml_file(selector_file)
 
-product_url_file = Product.PATH_PRODUCT / "product_urls.txt"
-file = open(product_url_file, "r+")
-file.truncate(0)
-file.close()
-
 
 for category in valid_categories:
     url_category = util.get_link_to_category(category)
@@ -25,8 +20,16 @@ for category in valid_categories:
     urls_products = [x.split('/ref')[0] for x in urls_products]
     urls_products = [util.get_absolute_amazon_url(url) for url in urls_products]
 
-    dump_to_json(urls_products)
-
+    t_start = time.time()
+    try:
+        dump_to_json(category,urls_products)
+    except Exception as e:
+        print(f'Failed Category: {category}')
+        print(e)
+        raise e
+            
+        if (time.time() - t_start) > 30:
+            break
 """
 # 1. Prepartion: Read configuration file to determine which bestseller categories should be looked at
 

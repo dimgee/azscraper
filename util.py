@@ -11,6 +11,7 @@ from Common.Data.categories_map import CATEGORIES2URLMAP
 # from scrapy.selector import Selector
 # from scrapy.http import HtmlResponse
 import requests
+import time
 from bs4 import BeautifulSoup
 
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
