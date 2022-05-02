@@ -3,6 +3,7 @@ import requests
 import json
 from . import PATH_PRODUCT
 from time import sleep
+import time
 
 # Create an Extractor by reading from the YAML file
 
@@ -37,8 +38,9 @@ def scrape(url):
     return e.extract(r.text)
 
 
-def dump_to_json(urllist):
-    out_path = PATH_PRODUCT / "product.jsonl"
+def dump_to_json(category, urllist):
+    prefix = str(time.time())
+    out_path = PATH_PRODUCT / f"{category}__({int(prefix)})_product.jsonl"
     with open(out_path, 'w') as outfile:
         for url in urllist:
             data = scrape(url)
